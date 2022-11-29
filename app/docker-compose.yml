@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  devDB:
+    image: postgres
+    container_name: devDB
+    environment:
+      POSTGRES_USER: summoner-service
+      POSTGRES_PASSWORD: dev_password
+      POSTGRES_DB: simple_user_db
+    volumes:
+      - user-service-data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+    network_mode: bridge
+
+  web:
+    build: .
+    ports:
+      - "8500:8080"
+    links:
+      - devDB
+    network_mode: bridge
+    depends_on:
+      - devDB
+
+volumes:
+  user-service-data:
