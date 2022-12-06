@@ -24,11 +24,18 @@ public class UserApplication extends Application<BasicConfiguration> {
     }
 
     @Override
+    public void initialize(Bootstrap<BasicConfiguration> bootstrap) {
+        bootstrap.setConfigurationSourceProvider(new ResourceConfigurationSourceProvider());
+        super.initialize(bootstrap);
+    }
+
+    @Override
     public void run(BasicConfiguration basicConfiguration, Environment environment) {
         UserComponent userComponent = DaggerUserComponent
                 .builder().environment(environment).configuration(basicConfiguration)
                 .build();
         environment.jersey().register(userComponent.getUserResource());
+        environment.jersey().register(userComponent.getGraphQLResource());
         registerCustomExceptionResponse(environment);
     }
 
@@ -53,11 +60,5 @@ public class UserApplication extends Application<BasicConfiguration> {
                 return exception.getExceptionCode() != null;
             }
         });
-    }
-
-    @Override
-    public void initialize(Bootstrap<BasicConfiguration> bootstrap) {
-        bootstrap.setConfigurationSourceProvider(new ResourceConfigurationSourceProvider());
-        super.initialize(bootstrap);
     }
 }

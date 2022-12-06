@@ -34,7 +34,7 @@ public class UserService {
         return userDetailsDao.getUserDetails(UUID.fromString(userId));
     }
 
-    public Object updateUser(String userId, User updatedUser) throws Exception
+    public User updateUser(String userId, User updatedUser) throws Exception
     {
         try
         {
@@ -44,8 +44,7 @@ public class UserService {
             }
             userFromDb.updateUser(updatedUser);
             LOGGER.info("UserObj:" + userFromDb.getFirst_name());
-            userDetailsDao.updateUserDetails(userFromDb);
-            return Map.of("message", "User details updated", "user_details", userFromDb);
+            return userDetailsDao.updateUserDetails(userFromDb);
         }
         catch (Exception e){
             LOGGER.error("Exception occurred while updating the user data. UserId:" + userId + ", " +
@@ -54,7 +53,7 @@ public class UserService {
         }
     }
 
-    public Object deleteUser(String userId) throws Exception
+    public void deleteUser(String userId) throws Exception
     {
         try
         {
@@ -64,7 +63,6 @@ public class UserService {
             }
             LOGGER.info("Deleting user, UserId:" + userId);
             userDetailsDao.deleteUser(UUID.fromString(userId));
-            return Map.of("message", "User removed.");
         }
         catch (Exception e){
             LOGGER.error("Exception occurred while deleting the user data. UserId:" + userId + ", " +
@@ -73,12 +71,11 @@ public class UserService {
         }
     }
 
-    public Object addNewUser(User user) throws Exception
+    public User addNewUser(User user) throws Exception
     {
         try {
             user.setUser_id(UUID.randomUUID());
-            userDetailsDao.addUserDetails(user);
-            return Map.of("message", "A new user added.");
+            return userDetailsDao.addUserDetails(user);
         }
         catch (Exception e){
             LOGGER.error("Exception occurred while storing a new user data." + e.getMessage() + e.getStackTrace());

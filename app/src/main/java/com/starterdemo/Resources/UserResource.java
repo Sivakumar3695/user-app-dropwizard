@@ -48,9 +48,9 @@ public class UserResource {
     @POST
     public Response addNewUser(User user) throws Exception
     {
-        Object respObj = userService.addNewUser(user);
+        userService.addNewUser(user);
         return Response.ok()
-                .entity(respObj)
+                .entity(Map.of("message", "A new user added"))
                 .build();
     }
 
@@ -58,9 +58,9 @@ public class UserResource {
     @Path("/{user_id}")
     public Response updateUser(@PathParam("user_id") String user_id, User user) throws Exception
     {
-        Object respObj = userService.updateUser(user_id, user);
+        User userObj = userService.updateUser(user_id, user);
         return Response.ok()
-                .entity(respObj)
+                .entity(Map.of("message", "User details updated", "user_details", userObj))
                 .build();
     }
 
@@ -68,9 +68,9 @@ public class UserResource {
     @Path("/{user_id}")
     public Response updateUser(@PathParam("user_id") String user_id) throws Exception
     {
-        Object respObj = userService.deleteUser(user_id);
+        userService.deleteUser(user_id);
         return Response.ok()
-                .entity(respObj)
+                .entity(Map.of("message", "User removed"))
                 .build();
     }
 }

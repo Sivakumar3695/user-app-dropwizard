@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.jdbi.v3.core.mapper.reflect.ColumnName;
 
+import java.util.Map;
 import java.util.UUID;
 
 @Getter
@@ -20,6 +21,13 @@ public class User {
         String first_name;
         String last_name;
         String email_id;
+
+        public User(Map userDetails)
+        {
+                this.first_name = (String) userDetails.getOrDefault("first_name", null);
+                this.last_name = (String) userDetails.getOrDefault("last_name", null);
+                this.email_id = (String) userDetails.getOrDefault("email_id", null);
+        }
 
         public void updateUser(User updatedUser)
         {
